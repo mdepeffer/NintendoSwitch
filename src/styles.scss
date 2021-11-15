@@ -33,7 +33,7 @@ body, html {
 #container {
   width: $controller-width * 2 + $main-width + 80px;
   white-space: nowrap;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
 }
 
 .controllercontainer {
@@ -535,12 +535,32 @@ body, html {
 }
 
 .maincontainer {
+  $m-indent-width: 8px;
+  $m-indent-height: 14px;
+
   display: inline-block;
   position: relative;
   width: $main-width;
   height: $main-height;
   margin: 10px;
   z-index: 1;
+
+  .indent {
+    position: absolute;
+    top: $m-indent-height - $m-indent-width;
+    width: $m-indent-width;
+    height: $m-indent-width;
+    background: radial-gradient(circle at top left, transparent 0 65%, lighten($main-color, 8%) 70% 100%);
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      transform: scaleX(-1);
+      right: 0;
+    }
+  }
 
   .main {
     position: absolute;
@@ -551,10 +571,20 @@ body, html {
     background: $main-color;
     box-shadow: 0 -10px 10px -3px rgba(0, 0, 0, 0.2) inset,
         0 10px 10px -3px rgba(255, 255, 255, 0.2) inset;
+    clip-path: polygon(
+      $m-indent-width               0,
+      $main-width - $m-indent-width 0,
+      $main-width - $m-indent-width $m-indent-height,
+      100%                          $m-indent-height,
+      100%                          100%,
+      0                             100%,
+      0                             $m-indent-height,
+      $m-indent-width           $m-indent-height
+    );
 
     .bevel {
       $bevel-offset-left: 18px;
-      $bevel-offset-top: 14px;
+      $bevel-offset-top: 10px;
       $bevel-width: $main-width - (2 * $bevel-offset-left);
       $bevel-height: $main-height - (2 * $bevel-offset-top);
 
