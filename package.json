@@ -1,0 +1,21 @@
+{
+  "name": "nintendoswitch",
+  "version": "1.0.0",
+  "description": "Nintendo Switch in CSS",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run _copystatic && npm run _buildstyles",
+    "watch": "npm run _copystatic && npm run _watchstyles",
+
+    "_buildstyles": "sass src/styles.scss dist/styles.css",
+    "_watchstyles": "sass src/styles.scss dist/styles.css --watch",
+    "_copystatic": "copyfiles -f src/static/* dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "sass": "^1.43.4"
+  }
+}

@@ -1,0 +1,430 @@
+$controller-left-color: #00c3e3;
+$controller-right-color: #ff4554;
+$controller-button-color: #414548;
+$controller-button-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+$controller-button-label-color: #bbb;
+$controller-button-label-dark: darken($controller-button-color, 16%);
+
+.controller {
+  $c-width: 120px;
+  $c-height: 400px;
+  $c-radius: $c-width - 40px;
+
+  display: inline-block;
+  position: relative;
+  width: $c-width;
+  height: $c-height;
+  margin: 20px;
+
+  &.left {
+    background: $controller-left-color;
+    border-radius: $c-radius 0 0 $c-radius;
+    box-shadow: 10px -10px 10px -3px rgba(0, 0, 0, 0.1) inset,
+      4px 10px 10px -3px rgba(255, 255, 255, 0.2) inset;
+  }
+
+  &.right {
+    background: $controller-right-color;
+    border-radius: 0 $c-radius $c-radius 0;
+    box-shadow: -10px -10px 10px -3px rgba(0, 0, 0, 0.1) inset,
+      -4px 10px 10px -3px rgba(255, 255, 255, 0.2) inset;
+  }
+
+  .shoulder {
+    $s-dimension: $c-radius + 20px;
+    $s-width: 4px;
+
+    position: absolute;
+    top: -$s-width;
+    width: $s-dimension;
+    height: $s-dimension;
+    border-radius: $c-radius $s-width 0 0;
+    background: $controller-button-color;
+    z-index: -1;
+    box-shadow: -4px -4px 4px -1px rgba(0, 0, 0, 0.1) inset,
+      0 2px 4px -1px rgba(255, 255, 255, 0.2) inset;
+    clip-path: polygon(100% 100%, 0 40%, 0 0, 100% 0);
+
+    &.left {
+      left: -$s-width;
+    }
+
+    &.right {
+      right: -$s-width;
+      transform: scaleX(-1);
+    }
+  }
+
+  .connector {
+    $con-height: $c-height - 60px;
+    $con-base-width: 6px;
+    $con-base-margin: 10px;
+    $con-button-height: 40px;
+    $con-button-margin: 2px;
+    $con-lip-gap: $con-button-height + (2 * $con-button-margin);
+    $con-lip-gap-taper: 14px;
+    $con-lip-width: 4px;
+    $con-lip-upper-height: 40px;
+    $con-lip-lower-height: 40px;
+
+    position: absolute;
+    top: 20px;
+
+    &.left {
+      right: 0;
+    }
+
+    &.right {
+      left: 0;
+      transform: scaleX(-1);
+    }
+
+    .base {
+      position: absolute;
+      top: 0;
+      width: $con-base-width;
+      height: $con-height - $con-base-margin;
+      background: $controller-button-label-dark;
+      left: 0;
+      box-shadow: 0 10px 4px -4px rgba(255, 255, 255, 0.2) inset;
+    }
+
+    .lip {
+      position: absolute;
+      width: $con-lip-width;
+      background: $controller-button-color;
+
+      &.full {
+        top: 0;
+        left: $con-base-width;
+        height: $con-height;
+        border-bottom-left-radius: $con-lip-width;
+      }
+
+      &.upper {
+        top: 0;
+        left: $con-base-width + $con-lip-width;
+        height: $con-lip-upper-height - $con-lip-gap-taper;
+      }
+
+      &.middle {
+        top: $con-lip-upper-height + $con-lip-gap + $con-lip-gap-taper;
+        left: $con-base-width + $con-lip-width;
+        height: $con-height - (2 * $con-lip-gap) - $con-lip-upper-height -
+          $con-lip-lower-height - (2 * $con-lip-gap-taper);
+      }
+
+      &.lower {
+        bottom: -$con-height;
+        left: $con-base-width + $con-lip-width;
+        height: $con-lip-lower-height - $con-lip-gap-taper;
+      }
+
+      &.full,
+      &.upper {
+        box-shadow: 0 10px 4px -4px rgba(255, 255, 255, 0.2) inset;
+      }
+
+      &.upper::after,
+      &.middle::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: $con-lip-width;
+        height: $con-lip-gap-taper;
+        background: linear-gradient(
+          to bottom right,
+          $controller-button-color 0 50%,
+          transparent 50% 100%
+        );
+      }
+
+      &.middle::before,
+      &.lower::before {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        width: $con-lip-width;
+        height: $con-lip-gap-taper;
+        background: linear-gradient(
+          to top right,
+          $controller-button-color 0 50%,
+          transparent 50% 100%
+        );
+      }
+    }
+
+    .button {
+      position: absolute;
+      left: $con-base-width + $con-lip-width;
+      width: $con-lip-width;
+      height: $con-button-height;
+      border-radius: 0 $con-lip-width $con-lip-width 0;
+      box-shadow: -2px -2px 2px rgba(0, 0, 0, 0.2) inset,
+        -2px 2px 2px rgba(255, 255, 255, 0.5) inset;
+
+      &.left {
+        background: $controller-left-color;
+      }
+
+      &.right {
+        background: $controller-right-color;
+      }
+
+      &.top {
+        top: $con-lip-upper-height + $con-button-margin;
+      }
+
+      &.bottom {
+        bottom: -$con-height + $con-lip-lower-height + $con-button-margin;
+      }
+    }
+  }
+
+  .joystick {
+    $j-dimension: 60px;
+
+    position: absolute;
+    width: $j-dimension;
+    height: $j-dimension;
+    background: $controller-button-color;
+    border-radius: 50%;
+    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.6),
+      0 ($j-dimension * -0.2) ($j-dimension * 0.3) rgba(0, 0, 0, 0.16) inset,
+      0 ($j-dimension * 0.2) ($j-dimension * 0.3) rgba(255, 255, 255, 0.16)
+        inset;
+
+    &.left {
+      top: 106px - ($j-dimension * 0.5);
+      left: ($c-width - $j-dimension) * 0.5;
+    }
+
+    &.right {
+      bottom: 182px - ($j-dimension * 0.5);
+      right: ($c-width - $j-dimension) * 0.5;
+    }
+  }
+
+  .systembutton {
+    $sb-dimension: 24px;
+    $sb-width: 8px;
+    $sb-offset-top: 36px;
+    $sb-offset-side: 14px;
+
+    position: absolute;
+    top: $sb-offset-top;
+    width: $sb-dimension;
+    height: $sb-dimension;
+
+    &.left {
+      right: $sb-offset-side;
+    }
+
+    &.right {
+      left: $sb-offset-side;
+    }
+
+    &.inner {
+      position: absolute;
+      background: $controller-button-color;
+      &.horizontal {
+        top: calc(50% - #{$sb-width * 0.5});
+        left: 0;
+        width: $sb-dimension;
+        height: $sb-width;
+
+        &:not(.mask) {
+          box-shadow: $controller-button-shadow;
+        }
+      }
+
+      &.vertical {
+        top: 0;
+        left: calc(50% - #{$sb-width * 0.5});
+        height: $sb-dimension;
+        width: $sb-width;
+        box-shadow: $controller-button-shadow;
+      }
+    }
+  }
+
+  .radial {
+    $r-containerdimension: 82px;
+    $r-buttondimension: 26px;
+
+    position: absolute;
+    width: $r-containerdimension;
+    height: $r-containerdimension;
+
+    &.left {
+      bottom: 140px;
+      right: ($c-width - $r-containerdimension) * 0.5;
+    }
+
+    &.right {
+      top: 64px;
+      left: ($c-width - $r-containerdimension) * 0.5;
+    }
+
+    .radialbutton {
+      position: absolute;
+      display: flex;
+      width: $r-buttondimension;
+      height: $r-buttondimension;
+      border-radius: 50%;
+      background: $controller-button-color;
+      box-shadow: $controller-button-shadow, 0 -2px 2px rgba(0, 0, 0, 0.2) inset,
+        0 2px 2px rgba(255, 255, 255, 0.1) inset;
+      align-items: center;
+      justify-content: center;
+
+      &.top {
+        top: 0;
+        left: ($r-containerdimension - $r-buttondimension) * 0.5;
+      }
+
+      &.left {
+        top: ($r-containerdimension - $r-buttondimension) * 0.5;
+        left: 0;
+      }
+
+      &.bottom {
+        bottom: 0;
+        left: ($r-containerdimension - $r-buttondimension) * 0.5;
+      }
+
+      &.right {
+        top: ($r-containerdimension - $r-buttondimension) * 0.5;
+        right: 0;
+      }
+
+      .label {
+        &.text {
+          font-family: sans-serif;
+          font-weight: bold;
+          font-size: $r-buttondimension * 0.6;
+          color: $controller-button-label-color;
+        }
+
+        &.arrow {
+          width: 0;
+          height: 0;
+          border-left: ($r-buttondimension * 0.26) solid transparent;
+          border-right: ($r-buttondimension * 0.26) solid transparent;
+          border-bottom: ($r-buttondimension * 0.3) solid
+            $controller-button-label-dark;
+
+          &.top {
+            transform: rotate(0deg);
+            margin-top: -2px;
+          }
+
+          &.right {
+            transform: rotate(90deg);
+            margin-right: -2px;
+          }
+
+          &.bottom {
+            transform: rotate(180deg);
+            margin-bottom: -2px;
+          }
+
+          &.left {
+            transform: rotate(270deg);
+            margin-left: -2px;
+          }
+        }
+      }
+    }
+  }
+
+  .record {
+    $rec-dimension: 22px;
+
+    position: absolute;
+    bottom: 90px;
+    right: 30px;
+    width: $rec-dimension;
+    height: $rec-dimension;
+    background: $controller-button-color;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6), 0 -2px 2px rgba(0, 0, 0, 0.2) inset,
+      0 2px 2px rgba(255, 255, 255, 0.1) inset;
+
+    .inner {
+      $margin: 4px;
+
+      position: absolute;
+      left: $margin;
+      top: $margin;
+      width: $rec-dimension - (2 * $margin);
+      height: $rec-dimension - (2 * $margin);
+      border-radius: 50%;
+      background: $controller-button-label-dark;
+    }
+  }
+
+  .home {
+    $home-dimension: 28px;
+
+    position: absolute;
+    bottom: 86px;
+    left: 30px;
+    width: $home-dimension;
+    height: $home-dimension;
+    border-radius: 50%;
+    background: #aaa;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+
+    .inner {
+      $margin: 3px;
+      $inner-dimension: $home-dimension - (2 * $margin);
+
+      position: absolute;
+      top: $margin;
+      left: $margin;
+      width: $inner-dimension;
+      height: $inner-dimension;
+      border-radius: 50%;
+      background: $controller-button-color;
+
+      .icon {
+        $house-width: $inner-dimension * 0.5;
+        $house-height: $house-width * 0.7;
+
+        position: absolute;
+        top: $inner-dimension * 0.44;
+        left: ($inner-dimension - $house-width) * 0.5;
+        width: $house-width;
+        height: $house-height;
+        background: $controller-button-label-dark;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: $house-height;
+          left: $house-width * 0.5;
+          width: 0;
+          height: 0;
+          border-left: ($inner-dimension * 0.38) solid transparent;
+          border-right: ($inner-dimension * 0.38) solid transparent;
+          border-bottom: ($inner-dimension * 0.36) solid
+            $controller-button-label-dark;
+          transform: translate(-50%, 0);
+        }
+
+        &::after {
+          $innermargin: 4px;
+          content: "";
+          position: absolute;
+          top: 0;
+          left: $innermargin;
+          width: $house-width - (2 * $innermargin);
+          height: $house-height - $innermargin;
+          background: $controller-button-color;
+        }
+      }
+    }
+  }
+}
